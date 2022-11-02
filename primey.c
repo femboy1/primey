@@ -6,7 +6,7 @@
 #include <ctype.h>
 
 double ratio(unsigned long long int z) {
-    return log(z) / 3.141 - 0.212 + (1/z);
+    return log(z) / 3.141 - 0.212;
 }
 
 int main(int argc, const char** argv) {
@@ -27,8 +27,12 @@ int main(int argc, const char** argv) {
 
     printf("\n");
 
-    char* file = "primes";
+    char* file = NULL;
+    char* ff = NULL;
     char arg_max = 1;
+
+    char* c_str;
+    char* cc = NULL;
 
     for (int i = 1; i<argc; i++) {
         if (argv[i][1] == '-') {
@@ -36,9 +40,26 @@ int main(int argc, const char** argv) {
                 case 'f':
                     file = malloc(strlen(argv[i]));
                     strcpy(file, argv[i]);
+                    ff = file; // cache file pointer apparently
                     file = strtok(file, "=");
                     file = strtok(NULL, "=");
                     break;
+                case 'j':
+                        c_str = malloc(strlen(argv[i]));
+                        cc = c_str;
+                        c_str = strtok(c_str, "=");
+                        c_str = strtok(NULL, "=");
+                        if (c_str == NULL) {
+                            printf("\e[31;1;3mError! Empty cpus argument!\e[0m\n");
+                            free(cc);
+                            if (ff != NULL) {
+                                free(ff);
+                            }
+                            return 1;
+                        };
+                        cpus = atoi(c_str);
+                        break;
+
                 default:
                     printf("\e[31;1;3mError! Unexpected argument '%s'!\e[0m\n", argv[i]);
                     return 1;
@@ -52,6 +73,7 @@ int main(int argc, const char** argv) {
 
     if (file == NULL) {
         printf("\e[31;1;3mError! Empty file argument!\e[0m\n");
+        free(ff);
         return 1;
     };
 
@@ -67,10 +89,13 @@ int main(int argc, const char** argv) {
     unsigned long long int pmax = (unsigned long long int)(max / 3.0);
 
     printf("\e[38;5;245;3m--- predictive computations ---\e[0m\n");
-    printf("\u2022 predicted (simple): %lld\n", pmax);
-    printf("\u2022 predicted (analytic): %.2f\n", pmax / ratio(max));
+    printf("\u2022 predicted (simple): \e[34;3m%lld\e[0m\n", pmax);
+    printf("\u2022 predicted (analytic): \e[34;3m%.2f\e[0m\n", pmax / ratio(max));
 
     printf("\n");
+
+    free(ff);
+    if (cc != NULL) free(cc);
 
     return 0;
 };
