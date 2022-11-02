@@ -1,7 +1,7 @@
 main: bin link
 
 clean:
-	@rm *.o *.a *.zip *.tar | true
+	@rm *.o *.a *.zip *.tar primey
 
 link: primey.o
 	$(CC) primey.o $(LDFLAGS) -o primey
