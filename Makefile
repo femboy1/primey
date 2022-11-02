@@ -1,18 +1,19 @@
-.PHONY: bin
+main: bin link
 
 clean:
 	@rm *.o *.a *.zip *.tar | true
 
+link: primey.o
+	$(CC) primey.o $(LDFLAGS) -o primey
+
 bin: primey.c
-	$(CC) primey.c -o primey -std=$(CSTD) $(CFLAGS)
+	$(CC) primey.c -c -std=$(CSTD) $(CFLAGS)
 
 CC := gcc
 CSTD = c99
 CFLAGS := -O3 -Wall -Werror -fstack-protector -pipe
 USEMOLD := f
 LDFLAGS := -flto -lm
-
-
 
 ifeq ( USEMOLD, "y" )
 	LDFLAGS += -fuse-ld=mold
