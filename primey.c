@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <ctype.h>
+#include <pthread.h>
 
 double ratio(unsigned long long int z) {
     return log(z) / 3.141 - 0.212;
@@ -47,6 +48,7 @@ int main(int argc, const char** argv) {
                 case 'j':
                         c_str = malloc(strlen(argv[i]));
                         cc = c_str;
+                        strcpy(c_str, argv[i]);
                         c_str = strtok(c_str, "=");
                         c_str = strtok(NULL, "=");
                         if (c_str == NULL) {
@@ -57,7 +59,16 @@ int main(int argc, const char** argv) {
                             }
                             return 1;
                         };
+                        short int old_cpus = cpus;
                         cpus = atoi(c_str);
+                        if (cpus > old_cpus) {
+                            printf("\e[31;1;3mError! Not enough cpus!\e[0m\n");
+                            free(cc);
+                            if (ff != NULL) {
+                                free(ff);
+                            };
+                            return 1;
+                        }
                         break;
 
                 default:
@@ -83,6 +94,7 @@ int main(int argc, const char** argv) {
     printf("\e[38;5;245;3m--- given arguments ---\e[0m\n");
     printf("\u2022 file to write: \e[33m\"%s\"\e[0m\n", file);
     printf("\u2022 maximum: \e[34;3m%lld\e[0m\n", max);
+    printf("\u2022 threads to use: \e[34;3m%d\e[0m\n", cpus);
 
     printf("\n");
 
@@ -93,6 +105,9 @@ int main(int argc, const char** argv) {
     printf("\u2022 predicted (analytic): \e[34;3m%.2f\e[0m\n", pmax / ratio(max));
 
     printf("\n");
+
+
+
 
     free(ff);
     if (cc != NULL) free(cc);
