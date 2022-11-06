@@ -5,10 +5,16 @@
 #include <string.h>
 #include <ctype.h>
 #include <pthread.h>
+#include "compute.h"
+#include <stdbool.h>
+
+#include <time.h>
+#include <signal.h>
 
 double ratio(unsigned long long int z) {
     return log(z) / 3.141 - 0.212;
 }
+
 
 int main(int argc, const char** argv) {
     if (argc < 2) {
@@ -35,6 +41,9 @@ int main(int argc, const char** argv) {
     char* c_str;
     char* cc = NULL;
 
+    /*
+    * Ignore this disgusting mess of an argparse
+    */
     for (int i = 1; i<argc; i++) {
         if (argv[i][1] == '-') {
             switch (argv[i][2]) {
@@ -106,10 +115,103 @@ int main(int argc, const char** argv) {
 
     printf("\n");
 
+    
+    pthread_t* ths = (pthread_t*)(calloc(cpus, sizeof(pthread_t)));
 
+    // Allocate bounds
+    
+    struct ThreadTable* threadtable = (struct ThreadTable*)malloc((cpus+1)*sizeof(struct ThreadTable));
 
+    bool* finished_array = (bool*)calloc(cpus, sizeof(bool));
+    long long*  count_array = (long long*)calloc(cpus, sizeof(long long));
 
+    int remainder = max - (pmax * 3);
+
+    printf("\e[38;5;245;3m--- jobs ---\e[0m\n");
+    
+    for (int i = 0; i<cpus; i++) {
+        threadtable[i].lower_bound = (ull)(((double)max / cpus)*i);
+        
+        if (i == cpus-1) {
+            threadtable[i].lower_bound += (ull)remainder;
+        };
+
+        threadtable[i].upper_bound = (ull)(((double)max / cpus)*(i+1));
+
+        printf("\e[33m%d\e[0m ==> lbnd: \e[32m%lld\e[0m, upbnd: \e[32m%lld\e[0m\n", i, threadtable[i].lower_bound, threadtable[i].upper_bound);
+
+        threadtable[i].thread = &ths[i];
+        threadtable[i].finished_element = &finished_array[i];
+        threadtable[i].count_element = &count_array[i];
+
+        // allocate memory
+        threadtable[i].primes = 
+            (ull*)malloc(sizeof(ull) * 
+                ( (size_t)(threadtable[i].upper_bound - threadtable[i].lower_bound) / 3.0 ) + 1
+            );
+    };
+
+    struct timespec start, finish;
+    double elapsed;
+
+    for (int i = 0; i<cpus; i++) {
+        pthread_create(&ths[i], NULL, computeBounds, &threadtable[i]);
+    };
+
+    printf("\n\e[38;5;245;3m--- progress ---\e[0m\n");
+
+    clock_gettime(CLOCK_MONOTONIC, &start);
+
+    bool is_working = 1;
+    while (is_working) {
+        printf("\e[?25l");
+        is_working = 0;
+        printf("\e[0m\r[");
+        for (int i = 0; i<cpus; i++) {
+            if (finished_array[i] == 0) {
+                is_working = 1;
+                printf("\e[31m#\e[0m");
+            } else {
+                printf("\e[32m#\e[0m");
+            };
+        };
+        printf("]\e[0m");
+        fflush(stdout);
+        printf("\e[?25h");
+    };
+    printf("\e[?25h");
+    
+
+    printf("\n\n\e[35;1;3mFinished!\e[0m\n");
+
+    for (int i = 0; i<cpus; i++) {
+        pthread_join(ths[i], NULL);
+    };
+
+    clock_gettime(CLOCK_MONOTONIC, &finish);
+
+    elapsed = (finish.tv_sec - start.tv_sec);
+    elapsed += (finish.tv_nsec - start.tv_nsec) / 1000000000.0;
+
+    printf("\ntime taken: %.2f s\n", elapsed);
+
+    FILE* fp;
+
+    fp = fopen(file, "w+");
+    for (int i = 0; i<cpus; i++) {
+        for (int j = 1; j<count_array[i]+1; j++) {
+            fprintf(fp, "%lld\n", threadtable[i].primes[j]);
+        };
+        free(threadtable[i].primes);
+    };
+
+    fclose(fp);
+
+    free(ths);
+    free(threadtable);
     free(ff);
+    free(finished_array);
+    free(count_array);
     if (cc != NULL) free(cc);
 
     return 0;
