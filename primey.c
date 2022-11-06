@@ -118,12 +118,24 @@ int main(int argc, const char** argv) {
     
     pthread_t* ths = (pthread_t*)(calloc(cpus, sizeof(pthread_t)));
 
+    if (ths == NULL) {
+        return -1;
+    };
+
     // Allocate bounds
     
     struct ThreadTable* threadtable = (struct ThreadTable*)malloc((cpus+1)*sizeof(struct ThreadTable));
 
+    if (threadtable == NULL) {
+        return -1;
+    }
+
     bool* finished_array = (bool*)calloc(cpus, sizeof(bool));
-    long long*  count_array = (long long*)calloc(cpus, sizeof(long long));
+    long long* count_array = (long long*)calloc(cpus, sizeof(long long));
+
+    if (finished_array == NULL || count_array == NULL) {
+        return -1;
+    }
 
     int remainder = max - (pmax * 3);
 
@@ -149,6 +161,10 @@ int main(int argc, const char** argv) {
             (ull*)malloc(sizeof(ull) * 
                 ( (size_t)(threadtable[i].upper_bound - threadtable[i].lower_bound) / 3.0 ) + 1
             );
+
+        if (threadtable[i].primes == NULL) {
+            return -1;
+        };
     };
 
     struct timespec start, finish;
