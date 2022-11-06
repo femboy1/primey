@@ -6,7 +6,7 @@ Multi-threaded prime calcatator and calculator.
 
 To install `primey`, clone the repository or download a build.
 
-> Note: `primey` only works on POSIX-compliant systems due to usage of P`pthreads`.
+> Note: `primey` only works on POSIX-compliant systems due to usage of `pthreads`.
 
 If opting to build `primey` from scratch, run `make build`.
 
