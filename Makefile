@@ -1,7 +1,7 @@
 main: bin link
 
 clean:
-	@rm *.o *.a *.zip *.tar test primey
+	@rm *.o *.a *.zi *.tar test primey
 
 link: primey.o
 	$(CC) primey.o compute.o $(LDFLAGS) -o primey
@@ -19,6 +19,6 @@ ifeq ( USEMOLD, "y" )
 	LDFLAGS += -fuse-ld=mold
 endif
 
-ifeq ( FASTMATH, "y" )
+ifeq ( FASTMATH, "y" )p
 	CFLAGS += -ffast-math
 endif
