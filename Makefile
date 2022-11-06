@@ -16,7 +16,7 @@ bin: primey.c compute.c
 CC := gcc
 CSTD = c99
 OPT := 3
-CFLAGS := -$(OPT) -Wall -Werror -fstack-protector -pipe -D_POSIX_SOURCE -D_GNU_SOURCE
+CFLAGS := -O$(OPT) -Wall -Werror -fstack-protector -pipe -D_POSIX_SOURCE -D_GNU_SOURCE
 USEMOLD := f
 LDFLAGS := -flto -lm -lpthread
 VER := 1.0.1
