@@ -24,6 +24,6 @@ ifeq ( USEMOLD, "y" )
 	LDFLAGS += -fuse-ld=mold
 endif
 
-ifeq ( FASTMATH, "y" )p
+ifeq ( FASTMATH, "y" )
 	CFLAGS += -ffast-math
 endif

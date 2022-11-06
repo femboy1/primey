@@ -14,13 +14,13 @@ void* computeBounds(void* _ThreadTable) {
     ull count = 0;
 
 
-    long long i = (long long)(lower_bound / 6.0);
+    long long i = floor((long long)(lower_bound / 6.0));
 
     if (i == 0) {
         i++;
     }
 
-    for (; i<(long long)((upper_bound) / 6.0) + 1; i++) {
+    for (; i<(long long)((upper_bound) / 6.0); i++) {
         long long pp0 = 6 * i - 1;
         long long pp1 = 6 * i + 1;
         bool p0 = 0;

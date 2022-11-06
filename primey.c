@@ -150,6 +150,10 @@ int main(int argc, const char** argv) {
 
         threadtable[i].upper_bound = (ull)(((double)max / cpus)*(i+1));
 
+        if (i == cpus-1) {
+            threadtable[i].upper_bound += 6;
+        }
+
         printf("\e[33m%d\e[0m ==> lbnd: \e[32m%lld\e[0m, upbnd: \e[32m%lld\e[0m\n", i, threadtable[i].lower_bound, threadtable[i].upper_bound);
 
         threadtable[i].thread = &ths[i];
@@ -214,6 +218,7 @@ int main(int argc, const char** argv) {
     FILE* fp;
 
     fp = fopen(file, "w+");
+    fprintf(fp, "2\n3\n");
     for (int i = 0; i<cpus; i++) {
         for (int j = 1; j<count_array[i]+1; j++) {
             fprintf(fp, "%lld\n", threadtable[i].primes[j]);
