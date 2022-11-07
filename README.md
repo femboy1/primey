@@ -75,7 +75,7 @@ All of these benchmarks were done on a 16-thread, 8-core AMD Ryzen 7 3800X @ 3.6
 * Run 2: 9m 22s (562.81 s)
 * Run 3: 9m 12s (552.11 s)
 
-### Primes under $10^10$
+### Primes under $10^{10}$
 
 * Run 1: 27m 12s (1632.22 s)
 * Run 2: 27m 24s (1644.82 s)
