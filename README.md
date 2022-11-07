@@ -1,6 +1,6 @@
 # primey
 
-Multi-threaded prime calcatator and calculator.
+Multi-threaded prime calcatator and calculator. Currently it computes primes >3.
 
 ## Installation
 
@@ -28,3 +28,49 @@ Suppose $n$ is not prime, that is, $n$ has at least 2 factors. $n = pq$ where $p
 We can employ another technique, that is caching the previous primes and using them for the factorization. Checking for distinctly prime factors will be much faster, but it comes at a large memory cost. It also makes distributing the computative load much harder, as all threads will need to access the computations of other threads. I may implement this feature in the future.
 
 Primey distrubutes the computative load over threads. For the given number of accessable threads $t$ and the maximum number $m$, Primey will have each thread compute primes over an interval $\frac{m}{t}$. For example, to compute the first 100 million primes on two threads, the first thread would compute the first 50 million and the second the last 50 million.
+
+## Benchmarks
+
+All of these benchmarks were done on a 16-thread, 8-core AMD Ryzen 7 3800X @ 3.6 GHz. I am planning to do more in the future, up to $10^{15}$.
+
+### Primes under $10^3$
+
+* Run 1: 0.00 s
+* Run 2: 0.00 s
+* Run 3: 0.00 s
+
+### Primes under $10^4$
+
+* Run 1: 0.00 s
+* Run 2: 0.00 s
+* Run 3: 0.00 s
+
+### Primes under $10^5$
+
+* Run 1: 0.00 s
+* Run 2: 0.00 s
+* Run 3: 0.00 s
+
+### Primes under $10^6$
+
+* Run 1: 0.03 s
+* Run 2: 0.03 s
+* Run 3: 0.03 s
+
+### Primes under $10^7$
+
+* Run 1: 0.75 s
+* Run 2: 0.80 s
+* Run 3: *0.69* s
+
+### Primes under $10^8$
+
+* Run 1: 19.46 s
+* Run 2: 19.67 s
+* Run 3: 19.27 s
+
+### Primes under $10^9$
+
+* Run 1: 9m 25s (565.28 s)
+* Run 2: 9m 22s (562.81 s)
+* Run 3: 9m 12s (552.11 s)
