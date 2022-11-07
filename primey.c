@@ -196,6 +196,7 @@ int main(int argc, const char** argv) {
             };
         };
         printf("]\e[0m");
+        printf("\e[?25h");
         fflush(stdout);
         printf("\e[?25h");
     };
