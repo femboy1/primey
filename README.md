@@ -1,6 +1,6 @@
 # primey
 
-Multi-threaded prime calcatator and calculator. Currently it computes primes >3.
+Multi-threaded prime calcatator and calculator.
 
 ## Installation
 
