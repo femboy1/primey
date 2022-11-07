@@ -31,7 +31,7 @@ Primey distrubutes the computative load over threads. For the given number of ac
 
 ## Benchmarks
 
-All of these benchmarks were done on a 16-thread, 8-core AMD Ryzen 7 3800X @ 3.6 GHz. I am planning to do more in the future, up to $10^{15}$.
+All of these benchmarks were done on a 16-thread, 8-core AMD Ryzen 7 3800X @ 3.6 GHz with the IEE compliant Primey. I am planning to do more in the future, up to $10^{15}$.
 
 ### Primes under $10^3$
 
