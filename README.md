@@ -17,7 +17,7 @@ If opting to build `primey` from scratch, run `make build`.
 * `CFLAGS`: Flags passed to the C compiler *before* linking.
 * `LDFLAGS`: Linker flags.
 * `USEMOLD`: Use modern linker as provided by GCC. Requires modern linker.
-* `FASTMATH`: Faster arithmetic at the cost of IEE 674 standard violation. Generally results in a 4-5% performance decrease.
+* `FASTMATH`: Faster arithmetic at the cost of IEE 674 standard violation. Generally results in a 4-5% performance decrease. This occurs due to the IEE compliance insuring that $p \bmod k$ is finitely reducible, i.e that the set $\mathbb{Z} \bmod k$ is closed. This skips the checking step per operation.
 
 ## Technical Details for Nerds
 
