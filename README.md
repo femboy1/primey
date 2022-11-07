@@ -4,7 +4,7 @@ Multi-threaded prime calcatator and calculator. Currently it computes primes >3.
 
 ## Installation
 
-To install `primey`, clone the repository or download a build.
+To install `primey`, clone the repository or download a build. It requires a C compiler and `zip`.
 
 > Note: `primey` only works on POSIX-compliant systems due to usage of `pthreads`.
 
